@@ -463,8 +463,11 @@ public class WanderingSkaterEntity extends WanderingTrader {
     protected void updateTrades() {
         this.lastTradesGenTime = level().getGameTime();
         MerchantOffers merchantoffers = this.getOffers();
-        List<Enchantment> enchantments = ForgeRegistries.ENCHANTMENTS.getValues().stream().filter(enchantment -> enchantment.category == IWSEnchantmentRegistry.SKATEBOARD).collect(Collectors.toList());
-        Enchantment randomEnchant = enchantments.size() > 1 ? enchantments.get(random.nextInt(enchantments.size() - 1)) : enchantments.get(0);
+                List<Enchantment> enchantments = new ArrayList<>(List.of());
+        IWSEnchantmentRegistry.DEF_REG.getEntries().forEach(entry -> {
+            enchantments.add(entry.get());
+        });
+        Enchantment randomEnchant = enchantments.get(random.nextInt(enchantments.size() - 1));
         VillagerTrades.ItemListing[] trades = new VillagerTrades.ItemListing[]{
                 new SellingItemTrade(new ItemStack(IWSItemRegistry.SKATING_MANUAL.get(), 1), 2, 2, 4),
                 new BuyingItemTrade(new ItemStack(SkateboardWheels.DEFAULT.getItemRegistryObject().get(), 2), 1, 7, 3),
